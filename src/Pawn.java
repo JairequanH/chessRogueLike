@@ -18,16 +18,14 @@ public class Pawn extends Piece {
 
         if (isWhite) {
             // Forward moves for white pawn
-            if (xDiff == 2 && yDiff == 0 && firstMove && board.getPiece(newX, newY) == null && board.getPiece(this.x + 1, this.y) == null) {
-                firstMove = false;
+            if (firstMove && xDiff == 2 && yDiff == 0 && board.getPiece(newX, newY) == null && board.getPiece(this.x + 1, this.y) == null) {
                 return true; // Initial two-square move
             }
             if (xDiff == 1 && yDiff == 0 && board.getPiece(newX, newY) == null) return true; // Single square move
             if (xDiff == 1 && yDiff == 1 && board.getPiece(newX, newY) != null && board.getPiece(newX, newY).isWhite != isWhite) return true; // Capture move
         } else {
             // Forward moves for black pawn
-            if (xDiff == -2 && yDiff == 0 && firstMove && board.getPiece(newX, newY) == null && board.getPiece(this.x - 1, this.y) == null) {
-                firstMove = false;
+            if (firstMove && xDiff == -2 && yDiff == 0 && board.getPiece(newX, newY) == null && board.getPiece(this.x - 1, this.y) == null) {
                 return true; // Initial two-square move
             }
             if (xDiff == -1 && yDiff == 0 && board.getPiece(newX, newY) == null) return true; // Single square move
@@ -36,6 +34,12 @@ public class Pawn extends Piece {
 
         System.out.println("Invalid Move");
         return false;
+    }
+
+    @Override
+    public void move(int newX, int newY) {
+        super.move(newX, newY);
+        this.firstMove = false; // Set firstMove to false after the first move
     }
 
     @Override

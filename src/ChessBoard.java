@@ -14,7 +14,6 @@ public class ChessBoard {
         }
         // Place other pieces (Rooks, Knights, Bishops, Queens, Kings)
         // Add other pieces initialization code...
-        // Place Rooks
         board[0][0] = new Rook(true, 0, 0);
         board[0][7] = new Rook(true, 0, 7);
         board[7][0] = new Rook(false, 7, 0);
@@ -43,12 +42,8 @@ public class ChessBoard {
 
     public void movePiece(int startX, int startY, int endX, int endY) {
         Piece piece = board[startX][startY];
+        piece.move(endX, endY); // Use move method to update position
         board[endX][endY] = piece;
         board[startX][startY] = null;
-        if (piece != null) {
-            piece.x = endX;
-            piece.y = endY;
-        }
     }
 }
-
