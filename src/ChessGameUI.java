@@ -2,12 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChessGameUI extends JFrame {
     private ChessBoard board;
     private JPanel boardPanel;
     private boolean whiteTurn; // Track turns
     private int selectedX = -1, selectedY = -1; // Track selected piece
+    private List<int[]> possibleMoves = new ArrayList<>(); // Track possible moves
 
     public ChessGameUI() {
         board = new ChessBoard();
@@ -25,11 +28,26 @@ public class ChessGameUI extends JFrame {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 JPanel square = new JPanel(new BorderLayout());
+                square.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Add a border to each square
+
                 if ((i + j) % 2 == 0) {
                     square.setBackground(Color.WHITE);
                 } else {
                     square.setBackground(Color.GRAY);
                 }
+
+                // Highlight selected square with a yellow border
+                if (i == selectedX && j == selectedY) {
+                    square.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+                }
+
+                // Highlight possible moves with a blue border
+                for (int[] move : possibleMoves) {
+                    if (move[0] == i && move[1] == j) {
+                        square.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
+                    }
+                }
+
                 Piece piece = board.getPiece(i, j);
                 if (piece != null) {
                     JLabel pieceLabel = new JLabel(piece.getIcon());
@@ -49,6 +67,7 @@ public class ChessGameUI extends JFrame {
         }
         boardPanel.revalidate();
         boardPanel.repaint();
+        System.out.println("Board refreshed");
     }
 
     private void handleSquareClick(int x, int y) {
@@ -60,6 +79,7 @@ public class ChessGameUI extends JFrame {
                 selectedX = x;
                 selectedY = y;
                 System.out.println("Selected piece at: (" + x + ", " + y + ")");
+                possibleMoves = getPossibleMoves(selectedPiece); // Get possible moves for the selected piece
             }
         } else {
             // Move piece
@@ -74,7 +94,23 @@ public class ChessGameUI extends JFrame {
             }
             selectedX = -1;
             selectedY = -1;
+            possibleMoves.clear(); // Clear possible moves
         }
         setupBoardPanel(); // Refresh the board
     }
+
+    private List<int[]> getPossibleMoves(Piece piece) {
+        List<int[]> moves = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (piece.isValidMove(i, j, board)) {
+                    moves.add(new int[]{i, j});
+                }
+            }
+        }
+        return moves;
+    }
 }
+
+
+

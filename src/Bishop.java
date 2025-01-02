@@ -20,11 +20,14 @@ public class Bishop extends Piece {
         }
 
         // Check path for obstacles
-        int xDirection = (newX - this.x) / xDiff;
-        int yDirection = (newY - this.y) / yDiff;
+        int xDirection = (newX - this.x) == 0 ? 0 : (newX - this.x) / xDiff;
+        int yDirection = (newY - this.y) == 0 ? 0 : (newY - this.y) / yDiff;
+
         for (int i = 1; i < xDiff; i++) {
-            if (board.getPiece(this.x + i * xDirection, this.y + i * yDirection) != null) {
-                System.out.println("Obstacle at: (" + (this.x + i * xDirection) + ", " + (this.y + i * yDirection) + ")");
+            int intermediateX = this.x + i * xDirection;
+            int intermediateY = this.y + i * yDirection;
+            if (board.getPiece(intermediateX, intermediateY) != null) {
+                System.out.println("Obstacle at: (" + intermediateX + ", " + intermediateY + ")");
                 return false; // Obstacle in the way
             }
         }

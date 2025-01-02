@@ -5,6 +5,4 @@ public class Main {
         ChessGameUI gameUI = new ChessGameUI();
 
     }
-
-
 }
