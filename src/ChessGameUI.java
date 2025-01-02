@@ -82,19 +82,29 @@ public class ChessGameUI extends JFrame {
                 possibleMoves = getPossibleMoves(selectedPiece); // Get possible moves for the selected piece
             }
         } else {
-            // Move piece
+            // Handle click on another ally piece
             Piece selectedPiece = board.getPiece(selectedX, selectedY);
-            System.out.println("Trying to move piece from (" + selectedX + ", " + selectedY + ") to (" + x + ", " + y + ")");
-            if (selectedPiece.isValidMove(x, y, board)) {
-                board.movePiece(selectedX, selectedY, x, y);
-                System.out.println("Moved piece to: (" + x + ", " + y + ")");
-                whiteTurn = !whiteTurn; // Switch turns
+            Piece clickedPiece = board.getPiece(x, y);
+            if (clickedPiece != null && clickedPiece.isWhite == whiteTurn) {
+                // Select new piece
+                selectedX = x;
+                selectedY = y;
+                System.out.println("Selected new piece at: (" + x + ", " + y + ")");
+                possibleMoves = getPossibleMoves(clickedPiece); // Get possible moves for the new selected piece
             } else {
-                System.out.println("Invalid move from: (" + selectedX + ", " + selectedY + ") to (" + x + ", " + y + ")");
+                // Move piece
+                System.out.println("Trying to move piece from (" + selectedX + ", " + selectedY + ") to (" + x + ", " + y + ")");
+                if (selectedPiece.isValidMove(x, y, board)) {
+                    board.movePiece(selectedX, selectedY, x, y);
+                    System.out.println("Moved piece to: (" + x + ", " + y + ")");
+                    whiteTurn = !whiteTurn; // Switch turns
+                } else {
+                    System.out.println("Invalid move from: (" + selectedX + ", " + selectedY + ") to (" + x + ", " + y + ")");
+                }
+                selectedX = -1;
+                selectedY = -1;
+                possibleMoves.clear(); // Clear possible moves
             }
-            selectedX = -1;
-            selectedY = -1;
-            possibleMoves.clear(); // Clear possible moves
         }
         setupBoardPanel(); // Refresh the board
     }
@@ -110,7 +120,7 @@ public class ChessGameUI extends JFrame {
         }
         return moves;
     }
-}
 
+}
 
 
