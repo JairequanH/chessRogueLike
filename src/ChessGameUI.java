@@ -52,6 +52,7 @@ public class ChessGameUI extends JFrame {
     }
 
     private void handleSquareClick(int x, int y) {
+        System.out.println("Handle Click: (" + x + ", " + y + ")");
         if (selectedX == -1 && selectedY == -1) {
             // Select piece
             Piece selectedPiece = board.getPiece(x, y);
@@ -63,6 +64,7 @@ public class ChessGameUI extends JFrame {
         } else {
             // Move piece
             Piece selectedPiece = board.getPiece(selectedX, selectedY);
+            System.out.println("Trying to move piece from (" + selectedX + ", " + selectedY + ") to (" + x + ", " + y + ")");
             if (selectedPiece.isValidMove(x, y, board)) {
                 board.movePiece(selectedX, selectedY, x, y);
                 System.out.println("Moved piece to: (" + x + ", " + y + ")");
