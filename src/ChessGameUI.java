@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 public class ChessGameUI extends JFrame {
     private ChessBoard board;
     private JPanel boardPanel;
+    private JLabel turnLabel; // Label to display the current turn
     private boolean whiteTurn; // Track turns
     private int selectedX = -1, selectedY = -1; // Track selected piece
     private List<int[]> possibleMoves = new ArrayList<>(); // Track possible moves
@@ -17,12 +18,20 @@ public class ChessGameUI extends JFrame {
     public ChessGameUI() {
         board = new ChessBoard();
         boardPanel = new JPanel(new GridLayout(8, 8));
+        turnLabel = new JLabel("White's Turn", SwingConstants.CENTER); // Initialize turn label
+        turnLabel.setFont(new Font("Arial", Font.BOLD, 16));
         setupBoardPanel();
-        add(boardPanel);
-        setSize(600, 600);
+        setupUI();
+        whiteTurn = true; // White starts the game
+    }
+
+    private void setupUI() {
+        setLayout(new BorderLayout());
+        add(turnLabel, BorderLayout.NORTH); // Add turn label to the top
+        add(boardPanel, BorderLayout.CENTER);
+        setSize(600, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        whiteTurn = true; // White starts the game
     }
 
     private void setupBoardPanel() {
@@ -102,6 +111,7 @@ public class ChessGameUI extends JFrame {
                         displayEndGameScreen(whiteTurn ? "White" : "Black"); // Display end game screen with winner
                     } else {
                         whiteTurn = !whiteTurn; // Switch turns
+                        updateTurnLabel(); // Update the turn label
                     }
                     selectedX = -1;
                     selectedY = -1;
@@ -116,6 +126,10 @@ public class ChessGameUI extends JFrame {
             }
         }
         setupBoardPanel(); // Refresh the board
+    }
+
+    private void updateTurnLabel() {
+        turnLabel.setText(whiteTurn ? "White's Turn" : "Black's Turn");
     }
 
     private List<int[]> getPossibleMoves(Piece piece) {
