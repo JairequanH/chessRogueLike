@@ -40,10 +40,18 @@ public class ChessBoard {
         return board[x][y];
     }
 
-    public void movePiece(int startX, int startY, int endX, int endY) {
+    public boolean movePiece(int startX, int startY, int endX, int endY) {
         Piece piece = board[startX][startY];
+        Piece capturedPiece = board[endX][endY];
+
         piece.move(endX, endY); // Use move method to update position
         board[endX][endY] = piece;
         board[startX][startY] = null;
+
+        if (capturedPiece != null && capturedPiece instanceof King) {
+            return true; // King captured
+        }
+
+        return false;
     }
 }

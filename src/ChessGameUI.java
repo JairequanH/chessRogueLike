@@ -4,6 +4,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ChessGameUI extends JFrame {
     private ChessBoard board;
@@ -95,15 +97,22 @@ public class ChessGameUI extends JFrame {
                 // Move piece
                 System.out.println("Trying to move piece from (" + selectedX + ", " + selectedY + ") to (" + x + ", " + y + ")");
                 if (selectedPiece.isValidMove(x, y, board)) {
-                    board.movePiece(selectedX, selectedY, x, y);
-                    System.out.println("Moved piece to: (" + x + ", " + y + ")");
-                    whiteTurn = !whiteTurn; // Switch turns
+                    boolean kingCaptured = board.movePiece(selectedX, selectedY, x, y);
+                    if (kingCaptured) {
+                        displayEndGameScreen(whiteTurn ? "White" : "Black"); // Display end game screen with winner
+                    } else {
+                        whiteTurn = !whiteTurn; // Switch turns
+                    }
+                    selectedX = -1;
+                    selectedY = -1;
+                    possibleMoves.clear(); // Clear possible moves
                 } else {
                     System.out.println("Invalid move from: (" + selectedX + ", " + selectedY + ") to (" + x + ", " + y + ")");
+                    // Deselect piece if invalid move
+                    selectedX = x;
+                    selectedY = y;
+                    possibleMoves = getPossibleMoves(selectedPiece);
                 }
-                selectedX = -1;
-                selectedY = -1;
-                possibleMoves.clear(); // Clear possible moves
             }
         }
         setupBoardPanel(); // Refresh the board
@@ -121,6 +130,48 @@ public class ChessGameUI extends JFrame {
         return moves;
     }
 
+    private void displayEndGameScreen(String winner) {
+        JFrame endGameFrame = new JFrame("Game Over");
+        endGameFrame.setSize(300, 200);
+        endGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        endGameFrame.setLocationRelativeTo(null);
+
+        JLabel messageLabel = new JLabel(winner + " wins!", SwingConstants.CENTER);
+        messageLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        JButton restartButton = new JButton("Restart Game");
+        JButton titleButton = new JButton("Return to Title");
+
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ChessGameUI().setVisible(true);
+                endGameFrame.dispose(); // Close end game screen
+                dispose(); // Close current game screen
+            }
+        });
+
+        titleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ChessGameStartScreen().setVisible(true);
+                endGameFrame.dispose(); // Close end game screen
+                dispose(); // Close current game screen
+            }
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.add(restartButton);
+        buttonPanel.add(titleButton);
+
+        endGameFrame.setLayout(new BorderLayout());
+        endGameFrame.add(messageLabel, BorderLayout.CENTER);
+        endGameFrame.add(buttonPanel, BorderLayout.SOUTH);
+
+        endGameFrame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new ChessGameUI();
+    }
 }
-
-
