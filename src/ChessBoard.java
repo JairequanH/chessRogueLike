@@ -12,6 +12,8 @@ public class ChessBoard {
             board[1][i] = new Pawn(true, 1, i); // White Pawns
             board[6][i] = new Pawn(false, 6, i); // Black Pawns
         }
+        // Place other pieces (Rooks, Knights, Bishops, Queens, Kings)
+        // Add other pieces initialization code...
         // Place Rooks
         board[0][0] = new Rook(true, 0, 0);
         board[0][7] = new Rook(true, 0, 7);
@@ -40,8 +42,13 @@ public class ChessBoard {
     }
 
     public void movePiece(int startX, int startY, int endX, int endY) {
-        board[endX][endY] = board[startX][startY];
+        Piece piece = board[startX][startY];
+        board[endX][endY] = piece;
         board[startX][startY] = null;
+        if (piece != null) {
+            piece.x = endX;
+            piece.y = endY;
+        }
     }
 }
 

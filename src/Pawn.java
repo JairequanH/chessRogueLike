@@ -20,38 +20,18 @@ public class Pawn extends Piece {
             // Forward moves for white pawn
             if (xDiff == 2 && yDiff == 0 && firstMove && board.getPiece(newX, newY) == null && board.getPiece(this.x + 1, this.y) == null) {
                 firstMove = false;
-                this.x = newX;
-                this.y = newY;
                 return true; // Initial two-square move
             }
-            if (xDiff == 1 && yDiff == 0 && board.getPiece(newX, newY) == null){
-                this.x = newX;
-                this.y = newY;
-                return true; // Single square move
-            }
-            if (xDiff == 1 && yDiff == 1 && board.getPiece(newX, newY) != null && board.getPiece(newX, newY).isWhite != isWhite){
-                this.x = newX;
-                this.y = newY;
-                return true; // Capture move
-            }
+            if (xDiff == 1 && yDiff == 0 && board.getPiece(newX, newY) == null) return true; // Single square move
+            if (xDiff == 1 && yDiff == 1 && board.getPiece(newX, newY) != null && board.getPiece(newX, newY).isWhite != isWhite) return true; // Capture move
         } else {
             // Forward moves for black pawn
             if (xDiff == -2 && yDiff == 0 && firstMove && board.getPiece(newX, newY) == null && board.getPiece(this.x - 1, this.y) == null) {
                 firstMove = false;
-                this.x = newX;
-                this.y = newY;
                 return true; // Initial two-square move
             }
-            if (xDiff == -1 && yDiff == 0 && board.getPiece(newX, newY) == null){
-                this.x = newX;
-                this.y = newY;
-                return true; // Single square move
-            }
-            if (xDiff == -1 && yDiff == 1 && board.getPiece(newX, newY) != null && board.getPiece(newX, newY).isWhite != isWhite){
-                this.x = newX;
-                this.y = newY;
-                return true; // Capture move
-            }
+            if (xDiff == -1 && yDiff == 0 && board.getPiece(newX, newY) == null) return true; // Single square move
+            if (xDiff == -1 && yDiff == 1 && board.getPiece(newX, newY) != null && board.getPiece(newX, newY).isWhite != isWhite) return true; // Capture move
         }
 
         System.out.println("Invalid Move");
