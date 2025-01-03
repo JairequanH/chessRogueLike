@@ -2,12 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ChessBoardPanel extends JPanel {
-    private ChessGameState gameState;
+    private GameMode gameMode;
 
-    public ChessBoardPanel(ChessGameState gameState) {
-        this.gameState = gameState;
+    public ChessBoardPanel(GameMode gameMode) {
+        this.gameMode = gameMode;
         setLayout(new GridLayout(8, 8));
         setupBoard();
     }
@@ -25,23 +27,31 @@ public class ChessBoardPanel extends JPanel {
                     square.setBackground(Color.GRAY);
                 }
 
+                boolean isSelected = gameMode.isSelectedSquare(gameMode.getSelectedX(), gameMode.getSelectedY(), i, j);
+                List<int[]> possibleMoves = new ArrayList<>();
+                if (gameMode.getSelectedX() != -1 && gameMode.getSelectedY() != -1) {
+                    possibleMoves = gameMode.getPossibleMoves(gameMode.getPiece(gameMode.getSelectedX(), gameMode.getSelectedY()));
+                }
+
                 // Highlight selected square with a yellow border
-                if (gameState.isSelectedSquare(i, j)) {
+                if (isSelected) {
                     square.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
                 }
 
                 // Highlight possible moves with a blue border
-                if (gameState.isPossibleMove(i, j)) {
-                    square.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
+                for (int[] move : possibleMoves) {
+                    if (move[0] == i && move[1] == j) {
+                        square.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
+                    }
                 }
 
-                Piece piece = gameState.getPiece(i, j);
+                Piece piece = gameMode.getPiece(i, j);
                 if (piece != null) {
                     JLabel pieceLabel = new JLabel(piece.getIcon());
                     square.add(pieceLabel);
 
                     // Highlight king in red if in check
-                    if (piece instanceof King && gameState.isKingInCheck(piece.isWhite)) {
+                    if (piece instanceof King && gameMode.isKingInCheck(piece.isWhite)) {
                         square.setBackground(Color.RED);
                     }
                 }
@@ -50,7 +60,7 @@ public class ChessBoardPanel extends JPanel {
                 square.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        gameState.handleSquareClick(x, y);
+                        gameMode.handleSquareClick(x, y);
                         setupBoard(); // Refresh the board
                     }
                 });
@@ -61,4 +71,3 @@ public class ChessBoardPanel extends JPanel {
         repaint();
     }
 }
-

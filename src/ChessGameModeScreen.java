@@ -20,7 +20,7 @@ public class ChessGameModeScreen extends JFrame {
         classicNoCheckButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChessGameUI chessGameUI = new ChessGameUI(false); // Classic No Check mode
+                ChessGameUI chessGameUI = new ChessGameUI(GameModeType.CLASSIC_NO_CHECK);
                 chessGameUI.setVisible(true);
                 dispose(); // Close mode selection screen
             }
@@ -29,7 +29,7 @@ public class ChessGameModeScreen extends JFrame {
         classicButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ChessGameUI chessGameUI = new ChessGameUI(true); // Classic mode
+                ChessGameUI chessGameUI = new ChessGameUI(GameModeType.CLASSIC);
                 chessGameUI.setVisible(true);
                 dispose(); // Close mode selection screen
             }

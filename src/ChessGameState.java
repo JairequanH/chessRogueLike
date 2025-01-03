@@ -4,18 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChessGameState {
     private ChessBoard board;
     private boolean whiteTurn;
-    private boolean classicMode;
+    private GameModeType gameModeType; // Track the current game mode
     private int selectedX = -1, selectedY = -1; // Track selected piece
     private List<int[]> possibleMoves = new ArrayList<>(); // Track possible moves
     private boolean whiteKingInCheck = false;
     private boolean blackKingInCheck = false;
     private JFrame gameWindow; // Reference to main game window
 
-    public ChessGameState(boolean classicMode, JFrame gameWindow) {
-        this.classicMode = classicMode;
+    public ChessGameState(GameModeType gameModeType, JFrame gameWindow) {
+        this.gameModeType = gameModeType;
         this.board = new ChessBoard();
         this.whiteTurn = true;
         this.gameWindow = gameWindow;
@@ -68,7 +73,7 @@ public class ChessGameState {
                         displayEndGameScreen(whiteTurn ? "White" : "Black"); // Display end game screen with winner
                     } else {
                         whiteTurn = !whiteTurn; // Switch turns
-                        if (classicMode) {
+                        if (gameModeType == GameModeType.CLASSIC) {
                             checkForCheck(); // Check for check in classic mode
                         }
                     }
@@ -146,7 +151,7 @@ public class ChessGameState {
         JButton titleButton = new JButton("Return to Title");
 
         restartButton.addActionListener(e -> {
-            new ChessGameUI(classicMode).setVisible(true);
+            new ChessGameUI(gameModeType).setVisible(true);
             endGameFrame.dispose(); // Close end game screen
             gameWindow.dispose(); // Close current game window
         });
