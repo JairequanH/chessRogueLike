@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args) {
 
-        ChessGameStartScreen startScreen = new ChessGameStartScreen();
+        ChessGameModeScreen startScreen = new ChessGameModeScreen();
         startScreen.setVisible(true);
     }
 }
