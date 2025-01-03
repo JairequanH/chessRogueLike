@@ -38,7 +38,8 @@ public class GameModeClassic extends GameMode {
                     if (kingCaptured) {
                         displayEndGameScreen(whiteTurn ? "White" : "Black"); // Display end game screen with winner
                     } else {
-                        whiteTurn = !whiteTurn; // Switch turns
+                        whiteTurn = !whiteTurn;// Switch turns
+                        updateTurnLabel(((ChessGameUI) gameWindow).getTurnLabel());
                         checkForSpecialConditions(); // Check for check
                         selectedX = -1;
                         selectedY = -1;

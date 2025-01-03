@@ -1,8 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.*;
-
-import javax.swing.*;
 
 public class ChessGameUI extends JFrame {
     private ChessBoardPanel boardPanel;
@@ -25,6 +22,12 @@ public class ChessGameUI extends JFrame {
         turnLabel.setFont(new Font("Arial", Font.BOLD, 16));
         setupUI();
     }
+
+    public JLabel getTurnLabel() {
+        return turnLabel;
+    }
+
+
 
     private void setupUI() {
         setLayout(new BorderLayout());

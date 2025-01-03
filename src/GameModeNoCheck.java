@@ -37,6 +37,7 @@ public class GameModeNoCheck extends GameMode {
                         displayEndGameScreen(whiteTurn ? "White" : "Black"); // Display end game screen with winner
                     } else {
                         whiteTurn = !whiteTurn; // Switch turns
+                        updateTurnLabel(((ChessGameUI) gameWindow).getTurnLabel());
                         selectedX = -1;
                         selectedY = -1;
                         possibleMoves.clear(); // Clear possible moves

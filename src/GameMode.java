@@ -21,6 +21,11 @@ public abstract class GameMode {
         return board.getPiece(x, y);
     }
 
+    public void updateTurnLabel(JLabel turnLabel) {
+        turnLabel.setText(whiteTurn ? "White's Turn" : "Black's Turn");
+    }
+
+
     public abstract int getSelectedX();
     public abstract int getSelectedY();
 
