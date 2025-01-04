@@ -40,6 +40,11 @@ public class ChessBoard {
         return board[x][y];
     }
 
+    public void placePiece(Piece piece, int x, int y) {
+        board[x][y] = piece;
+    }
+
+
     public boolean movePiece(int startX, int startY, int endX, int endY) {
         Piece piece = board[startX][startY];
         Piece capturedPiece = board[endX][endY];

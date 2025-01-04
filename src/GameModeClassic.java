@@ -15,40 +15,46 @@ public class GameModeClassic extends GameMode {
     @Override
     public void handleSquareClick(int x, int y) {
         if (selectedX == -1 && selectedY == -1) {
-            // Select piece
+            // No piece currently selected, select a piece
             Piece selectedPiece = getPiece(x, y);
             if (selectedPiece != null && selectedPiece.isWhite == whiteTurn) {
                 selectedX = x;
                 selectedY = y;
-                possibleMoves = getPossibleMoves(selectedPiece); // Get possible moves for the selected piece
+                possibleMoves = getPossibleMoves(selectedPiece);
             }
         } else {
-            // Handle click on another ally piece
+            // A piece is already selected
             Piece selectedPiece = getPiece(selectedX, selectedY);
             Piece clickedPiece = getPiece(x, y);
+
             if (clickedPiece != null && clickedPiece.isWhite == whiteTurn) {
-                // Select new piece
+                // Switch to the new ally piece
                 selectedX = x;
                 selectedY = y;
-                possibleMoves = getPossibleMoves(clickedPiece); // Get possible moves for the new selected piece
-            } else {
-                // Move piece
-                if (selectedPiece != null && selectedPiece.isValidMove(x, y, board)) {
-                    boolean kingCaptured = board.movePiece(selectedX, selectedY, x, y);
-                    if (kingCaptured) {
-                        displayEndGameScreen(whiteTurn ? "White" : "Black"); // Display end game screen with winner
-                    } else {
-                        whiteTurn = !whiteTurn;// Switch turns
-                        updateTurnLabel(((ChessGameUI) gameWindow).getTurnLabel());
-                        checkForSpecialConditions(); // Check for check
-                        selectedX = -1;
-                        selectedY = -1;
-                        possibleMoves.clear(); // Clear possible moves
-                    }
+                possibleMoves = getPossibleMoves(clickedPiece);
+            } else if (selectedPiece != null && selectedPiece.isValidMove(x, y, board)) {
+                // Attempt to move the piece
+                Piece originalPiece = board.getPiece(x, y); // Save the destination piece
+                board.movePiece(selectedX, selectedY, x, y);
+
+                if (isKingInCheck(whiteTurn)) {
+                    // Revert the move if it leaves the king in check
+                    board.movePiece(x, y, selectedX, selectedY);
+                    board.placePiece(originalPiece, x, y); // Restore the captured piece, if any
+                    System.out.println("Move leaves the king in check. Invalid move.");
+                } else {
+                    // Finalize the move
+                    whiteTurn = !whiteTurn;
+                    checkForSpecialConditions();
                 }
+                selectedX = -1;
+                selectedY = -1;
+                possibleMoves.clear();
             }
         }
     }
+
+
 
     @Override
     public void checkForSpecialConditions() {
@@ -80,8 +86,22 @@ public class GameModeClassic extends GameMode {
     @Override
     public boolean isKingInCheck(boolean isWhite) {
         King king = findKing(isWhite);
-        return king != null && isInCheck(king);
+        if (king == null) return false;
+
+        int kingX = king.x;
+        int kingY = king.y;
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece attacker = board.getPiece(i, j);
+                if (attacker != null && attacker.isWhite != isWhite && attacker.isValidMove(kingX, kingY, board)) {
+                    return true; // King is under attack
+                }
+            }
+        }
+        return false;
     }
+
 
     private boolean isInCheck(King king) {
         int kingX = king.x;
