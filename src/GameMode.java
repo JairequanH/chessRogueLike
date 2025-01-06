@@ -85,4 +85,5 @@ public abstract class GameMode {
 
         endGameFrame.setVisible(true);
     }
+
 }

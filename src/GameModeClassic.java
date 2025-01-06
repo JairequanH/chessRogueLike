@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameModeClassic extends GameMode {
-    private int selectedX = -1, selectedY = -1; // Track selected piece
+    public int selectedX = -1, selectedY = -1; // Track selected piece
     private List<int[]> possibleMoves = new ArrayList<>(); // Track possible moves
     private boolean whiteKingInCheck = false;
     private boolean blackKingInCheck = false;

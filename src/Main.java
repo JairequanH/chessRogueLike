@@ -4,4 +4,4 @@ public class Main {
         ChessGameModeScreen startScreen = new ChessGameModeScreen();
         startScreen.setVisible(true);
     }
-}
+} 
