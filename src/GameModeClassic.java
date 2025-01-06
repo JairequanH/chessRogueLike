@@ -7,6 +7,7 @@ public class GameModeClassic extends GameMode {
     private List<int[]> possibleMoves = new ArrayList<>(); // Track possible moves
     private boolean whiteKingInCheck = false;
     private boolean blackKingInCheck = false;
+    int turn = 0;
 
     public GameModeClassic(JFrame gameWindow) {
         super(gameWindow);
@@ -46,6 +47,7 @@ public class GameModeClassic extends GameMode {
                     // Finalize the move
                     whiteTurn = !whiteTurn;
                     checkForSpecialConditions();
+                    turn++;
                 }
                 selectedX = -1;
                 selectedY = -1;

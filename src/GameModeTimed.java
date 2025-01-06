@@ -7,6 +7,7 @@ public class GameModeTimed extends GameModeClassic {
     private int currentTime;
     private Timer timer;
     private JLabel timerLabel;
+    int tTurn = 0;
 
     public GameModeTimed(JFrame gameWindow, JLabel timerLabel, int turnTimeLimit) {
         super(gameWindow);
@@ -19,8 +20,9 @@ public class GameModeTimed extends GameModeClassic {
     @Override
     public void handleSquareClick(int x, int y) {
         super.handleSquareClick(x, y);
-        if (selectedX == -1 && selectedY == -1) {
+        if (selectedX == -1 && selectedY == -1 && tTurn < turn) {
             resetTimer();
+            tTurn++;
         }
     }
 

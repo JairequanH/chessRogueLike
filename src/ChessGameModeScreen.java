@@ -13,7 +13,7 @@ public class ChessGameModeScreen extends JFrame {
         // Create components
         JLabel titleLabel = new JLabel("Select Game Mode", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        JButton classicNoCheckButton = new JButton("Classic No Check");
+        JButton classicNoCheckButton = new JButton("No Check");
         JButton classicButton = new JButton("Classic");
         JButton timedButton = new JButton("Timed");
 
