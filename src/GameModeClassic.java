@@ -46,6 +46,7 @@ public class GameModeClassic extends GameMode {
                 } else {
                     // Finalize the move
                     whiteTurn = !whiteTurn;
+                    updateTurnLabel(((ChessGameUI) gameWindow).getTurnLabel());
                     checkForSpecialConditions();
                     turn++;
                 }
